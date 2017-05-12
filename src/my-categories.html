@@ -12,25 +12,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-categories">
-  <template>
-    <style include="shared-styles">
-      :host {
-        display: block;
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
 
-        padding: 10px;
-      }
-    </style>
+                padding: 10px;
+            }
+        </style>
 
-    <div class="card">
-      <div class="circle">1</div>
-      <h1>Categories list</h1>
-      <p>...</p>
-    </div>
-  </template>
+        <div class="card">
+            <div class="circle">1</div>
+            <h1>Categories list</h1>
+            <p>...</p>
+        </div>
+    </template>
 
-  <script>
-    Polymer({
-      is: 'my-categories',
-    });
-  </script>
+    <script>
+        Polymer({
+            is: 'my-categories',
+            listeners: {
+                'tap': 'onTap',
+            },
+            onTap: function() {
+                /* this.pressed = !this.pressed; */
+            },
+        });
+    </script>
 </dom-module>
