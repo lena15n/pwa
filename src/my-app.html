@@ -9,7 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <!--suppress HtmlUnknownTag -->
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
@@ -96,7 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
         <paper-toolbar>
-            <paper-icon-button icon="menu"></paper-icon-button>
+            <paper-icon-button icon="menu" on-click="onMenuClick" onclick="onMenuClick()"></paper-icon-button>
             <span class="title">My shop</span>
             <paper-icon-button icon="refresh"></paper-icon-button>
         </paper-toolbar>
@@ -149,6 +149,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           _showPage404: function() {
               this.page = 'view404';
+          },
+          onMenuClick: function() {
+              alert('Собака!');
           },
       });
   </script>
