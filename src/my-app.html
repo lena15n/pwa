@@ -25,24 +25,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
   <template>
     <style>
-      :host {
+   /*   :host {
         --app-primary-color: #4285f4;
         --app-secondary-color: black;
 
         display: block;
-      }
-
-      app-header {
-        color: #fff;
-        background-color: var(--app-primary-color);
-      }
-      app-header paper-icon-button {
-        --paper-icon-button-ink-color: white;
       }
 
       .drawer-list {
@@ -60,31 +53,74 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .drawer-list a.iron-selected {
         color: black;
         font-weight: bold;
+      }*/
+
+      body {
+          width: 100%;
+          margin: 0;
+          padding: 0;
       }
     </style>
-
+<!--
     <app-location route="{{route}}"></app-location>
     <app-route
             route="{{route}}"
             pattern="/:page"
             data="{{routeData}}"
-            tail="{{subroute}}"></app-route>
+            tail="{{subroute}}"></app-route>-->
 
-    <app-drawer-layout fullbleed>
-      <!-- Drawer content -->
-        <paper-drawer-panel>
-            <div drawer> Drawer panel... </div>
-            <paper-header-panel main>
-            <div main>
-                <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+
+
+       <!-- <paper-drawer-panel id="paperDrawerPanel" force-narrow>
+            <div class="drawer">
+                drawer
+               &lt;!&ndash; <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                     <a name="view1" href="/view1">View One</a>
                     <a name="categories" href="/categories">Categories</a>
-                    <a name="view2" href="/view2">View Two</a>
-                    <a name="view3" href="/view3">View Three</a>
-                </iron-selector>
+                </iron-selector>&ndash;&gt;
             </div>
-            </paper-header-panel>
-        </paper-drawer-panel>
+
+            <div main>
+                <paper-toolbar>
+                    <paper-icon-button icon="menu" on-tap="onMenuClick" ></paper-icon-button>
+                    <span class="title">My shop</span>
+                    <paper-icon-button icon="refresh"></paper-icon-button>
+                </paper-toolbar>
+                panel main
+            </div>
+        </paper-drawer-panel>-->
+
+      <paper-header-panel class="blue">
+          <div class="paper-header">STANDARD TEST</div>
+          <paper-drawer-panel
+                  id="mainDrawerPanel"
+                  class="main-drawer-panel"
+                  responsive-width="600px"
+                  drawer-width="[[_computeListWidth(_isMobile)]]"
+                  drawer-toggle-attribute="list-toggle"
+                  narrow="{{_isMobile}}">
+              <paper-header-panel class="list-panel" drawer>
+                  <paper-menu class="list" on-iron-activate="_listTap">
+                      <paper-item>1</paper-item>
+                      <paper-item>2</paper-item>
+                      <paper-item>3</paper-item>
+                      <paper-item>4</paper-item>
+                  </paper-menu>
+              </paper-header-panel>
+              <paper-header-panel class="content-panel" main>
+                  <paper-toolbar responsive-width="600px">
+                      <paper-icon-button icon="menu" list-toggle></paper-icon-button>
+                      <span class="flex">CHAT PERSON NAME HERE</span>
+                  </paper-toolbar>
+                  <div class="content">MAIN AREA</div>
+              </paper-header-panel>
+          </paper-drawer-panel>
+      </paper-header-panel>
+
+      <!-- Drawer content -->
+  <!--      <paper-drawer-panel>-->
+
+      <!--  </paper-drawer-panel>-->
 
       <!--<app-drawer id="drawer">
         <app-toolbar>Menu</app-toolbar>
@@ -92,14 +128,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-drawer>-->
 
       <!-- Main content -->
-      <app-header-layout has-scrolling-region>
 
 
-        <paper-toolbar>
-            <paper-icon-button icon="menu" on-click="onMenuClick" onclick="onMenuClick()"></paper-icon-button>
-            <span class="title">My shop</span>
-            <paper-icon-button icon="refresh"></paper-icon-button>
-        </paper-toolbar>
+
 
 
        <!-- <iron-pages
@@ -113,11 +144,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <my-view3 name="view3"></my-view3>
           <my-view404 name="view404"></my-view404>
         </iron-pages>-->
-      </app-header-layout>
-    </app-drawer-layout>
+
+
+
+
   </template>
 
   <script>
+      /* eslint-disable max-len,no-trailing-spaces */
+
       Polymer({
           is: 'my-app',
 
@@ -133,13 +168,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               '_routePageChanged(routeData.page)',
           ],
 
-          _routePageChanged: function(page) {
+       /*   _routePageChanged: function(page) {
               this.page = page || 'view1';
 
               if (!this.$.drawer.persistent) {
                   this.$.drawer.close();
               }
-          },
+          },*/
 
           _pageChanged: function(page) {
               // Load page import on demand. Show 404 page if fails
@@ -150,9 +185,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           _showPage404: function() {
               this.page = 'view404';
           },
-          onMenuClick: function() {
-              alert('Собака!');
-          },
+
+         /* onMenuClick: function() {
+              var pdp = document.getElementById('paperDrawerPanel');
+              pdp.togglePanel();
+          },*/
+
+         /* patchOverlay: function(e) {
+              if (e.target.withBackdrop) {
+                  e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
+              }
+          },*/
+
+
       });
   </script>
 </dom-module>
