@@ -27,6 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="my-icons.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 
 <dom-module id="my-app">
   <template>
@@ -56,10 +57,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }*/
 
       body {
+          position: relative;
           width: 100%;
           margin: 0;
           padding: 0;
       }
+
+
+       .fab {
+           position: absolute;
+           bottom: 50px;
+           right: 50px;
+           z-index: 2;
+
+       }
     </style>
 <!--
     <app-location route="{{route}}"></app-location>
@@ -101,10 +112,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   narrow="{{_isMobile}}">
               <paper-header-panel class="list-panel" drawer>
                   <paper-menu class="list" on-iron-activate="_listTap">
-                      <paper-item>1</paper-item>
-                      <paper-item>2</paper-item>
-                      <paper-item>3</paper-item>
-                      <paper-item>4</paper-item>
+                      <paper-item>Categories</paper-item>
                   </paper-menu>
               </paper-header-panel>
               <paper-header-panel class="content-panel" main>
@@ -112,7 +120,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       <paper-icon-button icon="menu" list-toggle></paper-icon-button>
                       <span class="flex">CHAT PERSON NAME HERE</span>
                   </paper-toolbar>
-                  <div class="content">MAIN AREA</div>
+                  <div class="content">MAIN AREA
+                      <paper-fab icon="create" class="fab" on-tap="createPurchase"></paper-fab><!-- or add -->
+
+                  </div>
               </paper-header-panel>
           </paper-drawer-panel>
       </paper-header-panel>
@@ -184,6 +195,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           _showPage404: function() {
               this.page = 'view404';
+          },
+
+          createPurchase: function() {
+              alert('он гребанный волшебник он');
           },
 
          /* onMenuClick: function() {
