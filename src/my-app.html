@@ -38,6 +38,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
@@ -143,17 +145,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-drawer-panel>
         </paper-header-panel>
 
-        <paper-dialog id="dialog">
-            <h2>Dialog Title</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat. Duis aute
-                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </paper-dialog>
+
 
         <paper-dialog id="newPurchaseDialog">
             <h2>Create new purchase note</h2>
+            <paper-input always-float-label label="Name"></paper-input>
+            <paper-input always-float-label label="Price"></paper-input>
+            <paper-input always-float-label label="Quantity"></paper-input>
             <paper-dropdown-menu-light label="Measure">
                 <!--
                   support hybrid mode:
@@ -164,6 +162,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <paper-item>Quantity(Qty)</paper-item><!-- штук -->
                     <paper-item>Grams(g)</paper-item>
                     <paper-item>Liters(l)</paper-item>
+                </paper-listbox>
+            </paper-dropdown-menu-light>
+
+            <paper-checkbox checked>Has been purchased</paper-checkbox>
+
+            <paper-input always-float-label label="Comment"></paper-input>
+
+            <paper-dropdown-menu-light label="Category">
+                <paper-listbox class="dropdown-content" slot="dropdown-content">
+                    <paper-item>Home</paper-item>
+                    <paper-item>Clothes</paper-item>
+                    <paper-item>Food</paper-item>
                 </paper-listbox>
             </paper-dropdown-menu-light>
 
