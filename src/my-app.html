@@ -94,6 +94,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 margin: 0 10px;
             }
 
+            .input-container {
+                position: relative;
+                margin: 30px 0;
+            }
+
+            .left {
+                position: absolute;
+                left: 0;
+                margin: 0 25px;
+                width: 40%;
+            }
+
+            .right {
+                position: absolute;
+                right: 0;
+                margin: 0 25px;
+            }
+
+            .dialog {
+                width: 500px;
+            }
+
+            paper-dropdown-menu-light {
+                --paper-menu-button-content: {
+                    width: 200px;
+                };
+            }
+
+            .left-drawer-panel {
+                font-family: 'Roboto', sans-serif;
+                font-size: larger;
+            }
+
+            .drawer-list {
+                background: #00acc1;
+                width: 50px;
+            }
+
+            .left-link {
+                margin: 10% 25%;
+                width: 100%;
+            }
 
         </style>
 
@@ -113,12 +155,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     drawer-width="[[_computeListWidth(_isMobile)]]"
                     drawer-toggle-attribute="list-toggle"
                     narrow="{{_isMobile}}">
-                <paper-header-panel class="list-panel" drawer>
+                <paper-header-panel class="left-drawer-panel" drawer>
                     <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                        <a name="categories" href="/categories">Categories</a><br>
-                        <a name="view1" href="/view1">View One</a>
+                        <div class="left-link">
+                            <a style="text-decoration: none" name="categories" href="/categories">Categories</a>
+                        </div>
+                        <div class="left-link">
+                            <a style="text-decoration: none" name="view1" href="/view1">View One</a>
+                        </div>
                     </iron-selector>
                 </paper-header-panel>
+
                 <paper-header-panel class="content-panel" main>
                     <paper-toolbar responsive-width="600px">
                         <paper-icon-button icon="menu" list-toggle></paper-icon-button>
@@ -145,27 +192,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-drawer-panel>
         </paper-header-panel>
 
+       <!-- USE IT FOR ITEMS OF LIST <paper-card image="demo/donuts.png">-->
 
-
-        <paper-dialog id="newPurchaseDialog">
+        <paper-dialog id="newPurchaseDialog" class="dialog">
             <h2>Create new purchase note</h2>
             <paper-input always-float-label label="Name"></paper-input>
-            <paper-input always-float-label label="Price"></paper-input>
-            <paper-input always-float-label label="Quantity"></paper-input>
-            <paper-dropdown-menu-light label="Measure">
-                <!--
-                  support hybrid mode:
-                  paper-dropdown-menu-light 1.x distributes via <content select=".dropdown-content">
-                  paper-dropdown-menu-light 2.x distributes via <slot name="dropdown-content">
-                -->
-                <paper-listbox class="dropdown-content" slot="dropdown-content">
-                    <paper-item>Quantity(Qty)</paper-item><!-- штук -->
-                    <paper-item>Grams(g)</paper-item>
-                    <paper-item>Liters(l)</paper-item>
-                </paper-listbox>
-            </paper-dropdown-menu-light>
+            <paper-input style="width: 40%" always-float-label label="Price"></paper-input>
 
-            <paper-checkbox checked>Has been purchased</paper-checkbox>
+            <div class="input-container">
+                <paper-input class="left" always-float-label label="Quantity"></paper-input>
+                <paper-dropdown-menu-light class="right" label="Measure">
+                    <!--
+                      support hybrid mode:
+                      paper-dropdown-menu-light 1.x distributes via <content select=".dropdown-content">
+                      paper-dropdown-menu-light 2.x distributes via <slot name="dropdown-content">
+                    -->
+                    <paper-listbox class="dropdown-content" slot="dropdown-content">
+                        <paper-item>Quantity(Qty)</paper-item><!-- штук -->
+                        <paper-item>Grams(g)</paper-item>
+                        <paper-item>Liters(l)</paper-item>
+                    </paper-listbox>
+                </paper-dropdown-menu-light>
+            </div>
+
+            <paper-checkbox style="margin-top: 90px" checked>Has been purchased</paper-checkbox>
 
             <paper-input always-float-label label="Comment"></paper-input>
 
