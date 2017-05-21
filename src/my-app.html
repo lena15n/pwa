@@ -11,9 +11,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <!--suppress HtmlUnknownTag -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
-<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
@@ -22,12 +19,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+
+<link rel="import" href="my-icons.html">
+
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-styles/paper-styles.html">
-<link rel="import" href="my-icons.html">
+<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 
 <dom-module id="my-app">
   <template>
@@ -63,7 +76,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 0;
       }
 
-
        .fab {
            position: absolute;
            bottom: 50px;
@@ -72,13 +84,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
        }
     </style>
-<!--
     <app-location route="{{route}}"></app-location>
     <app-route
             route="{{route}}"
             pattern="/:page"
             data="{{routeData}}"
-            tail="{{subroute}}"></app-route>-->
+            tail="{{subroute}}"></app-route>
 
 
 
@@ -111,50 +122,71 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   drawer-toggle-attribute="list-toggle"
                   narrow="{{_isMobile}}">
               <paper-header-panel class="list-panel" drawer>
-                  <paper-menu class="list" on-iron-activate="_listTap">
-                      <paper-item>Categories</paper-item>
-                  </paper-menu>
+                  <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+                      <a name="categories" href="/categories">Categories</a><br>
+                      <a name="view1" href="/view1">View One</a>
+                  </iron-selector>
               </paper-header-panel>
               <paper-header-panel class="content-panel" main>
                   <paper-toolbar responsive-width="600px">
                       <paper-icon-button icon="menu" list-toggle></paper-icon-button>
-                      <span class="flex">CHAT PERSON NAME HERE</span>
+                      <span class="flex">My Purchases</span>
                   </paper-toolbar>
-                  <div class="content">MAIN AREA
-                      <paper-fab icon="create" class="fab" on-tap="createPurchase"></paper-fab><!-- or add -->
+                  <div class="content">
+                      <iron-pages
+                              selected="[[page]]"
+                              attr-for-selected="name"
+                              fallback-selection="view404"
+                              role="main">
+                          <my-view1 name="view1"></my-view1>
+                          <my-categories name="categories"></my-categories>
+                          <my-new-purchase name="new-purchase"></my-new-purchase>
+                          <my-view404 name="view404"></my-view404>
+                      </iron-pages>
+
+
+                      <paper-fab on-tap="openNewPurchaseDialog"  icon="create" class="fab" ></paper-fab><!-- or add -->
+
+
+
+
 
                   </div>
               </paper-header-panel>
           </paper-drawer-panel>
       </paper-header-panel>
 
-      <!-- Drawer content -->
-  <!--      <paper-drawer-panel>-->
+      <paper-dialog id="dialog">
+          <h2>Dialog Title</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+              irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </paper-dialog>
 
-      <!--  </paper-drawer-panel>-->
+      <paper-dialog id="dropdownDialog">
+          <h2>Dialog Title</h2>
+          <paper-dropdown-menu-light label="Value">
+              <!--
+                support hybrid mode:
+                paper-dropdown-menu-light 1.x distributes via <content select=".dropdown-content">
+                paper-dropdown-menu-light 2.x distributes via <slot name="dropdown-content">
+              -->
+              <paper-listbox class="dropdown-content" slot="dropdown-content">
+                  <paper-item>1</paper-item>
+                  <paper-item>2</paper-item>
+                  <paper-item>3</paper-item>
+                  <paper-item>4</paper-item>
+                  <paper-item>5</paper-item>
+                  <paper-item>6</paper-item>
+                  <paper-item>7</paper-item>
+                  <paper-item>8</paper-item>
+                  <paper-item>9</paper-item>
+                  <paper-item>10</paper-item>
+              </paper-listbox>
+          </paper-dropdown-menu-light>
+      </paper-dialog>
 
-      <!--<app-drawer id="drawer">
-        <app-toolbar>Menu</app-toolbar>
-
-      </app-drawer>-->
-
-      <!-- Main content -->
 
 
-
-
-
-       <!-- <iron-pages
-                selected="[[page]]"
-                attr-for-selected="name"
-                fallback-selection="view404"
-                role="main">
-          <my-view1 name="view1"></my-view1>
-          <my-categories name="categories"></my-categories>
-          <my-view2 name="view2"></my-view2>
-          <my-view3 name="view3"></my-view3>
-          <my-view404 name="view404"></my-view404>
-        </iron-pages>-->
 
 
 
@@ -179,13 +211,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               '_routePageChanged(routeData.page)',
           ],
 
-       /*   _routePageChanged: function(page) {
-              this.page = page || 'view1';
-
-              if (!this.$.drawer.persistent) {
-                  this.$.drawer.close();
-              }
+          /* listeners: {
+              'newFabTap': 'dropdownDialog.open()',
           },*/
+
+          _routePageChanged: function(page) {
+              this.page = page || 'view1';
+          },
 
           _pageChanged: function(page) {
               // Load page import on demand. Show 404 page if fails
@@ -198,20 +230,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           },
 
           createPurchase: function() {
-              alert('он гребанный волшебник он');
+
           },
 
-         /* onMenuClick: function() {
-              var pdp = document.getElementById('paperDrawerPanel');
-              pdp.togglePanel();
-          },*/
-
-         /* patchOverlay: function(e) {
-              if (e.target.withBackdrop) {
-                  e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
-              }
-          },*/
-
+          openNewPurchaseDialog: function() {
+              this.$.dropdownDialog.open();
+          },
 
       });
   </script>
