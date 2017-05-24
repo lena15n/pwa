@@ -221,9 +221,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <paper-dropdown-menu-light on-iron-select="_onCategorySelected" label="Category">
                 <paper-listbox class="dropdown-content" slot="dropdown-content">
-                    <paper-item value="22">Home</paper-item>
-                    <paper-item value="444">Clothes</paper-item>
-                    <paper-item value="3">Food</paper-item>
+                    <paper-item categoryId="22">Home</paper-item>
+                    <paper-item categoryId="444">Clothes</paper-item>
+                    <paper-item categoryId="3">Food</paper-item>
                 </paper-listbox>
             </paper-dropdown-menu-light>
 
@@ -291,13 +291,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.page = 'view404';
             },
 
-            createPurchase: function() {
-
-            },
-
             openNewPurchaseDialog: function() {
                 this.$.newPurchaseDialog.open();
-                /* this.purchases = this.purchases + 1; */
             },
 
             _onNewPurchaseDialogClosed: function(e) {
@@ -334,8 +329,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _onCategorySelected: function(e) {
                 var selectedItem = e.target.selectedItem;
                 if (selectedItem) {
-                    this.selectedCategoryId = selectedItem.value;
-                    console.log('selected: ' + selectedItem.value);
+                    this.selectedCategoryId = selectedItem.attributes.categoryId.value;
+                    console.log('selected: ' + selectedItem.attributes.categoryId.value);
                 }
             },
 
