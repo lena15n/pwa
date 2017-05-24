@@ -194,14 +194,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
        <!-- USE IT FOR ITEMS OF LIST <paper-card image="demo/donuts.png">-->
 
-        <paper-dialog id="newPurchaseDialog" class="dialog">
+        <paper-dialog id="newPurchaseDialog" on-iron-overlay-closed="_onNewPurchaseDialogClosed" class="dialog">
             <h2>Create new purchase note</h2>
-            <paper-input always-float-label label="Name"></paper-input>
-            <paper-input style="width: 40%" always-float-label label="Price"></paper-input>
+            <paper-input value="{{purchaseName}}" always-float-label label="Name"></paper-input>
+            <paper-input value="{{price}}" type="number" style="width: 40%" always-float-label label="Price"></paper-input>
 
             <div class="input-container">
-                <paper-input class="left" always-float-label label="Quantity"></paper-input>
-                <paper-dropdown-menu-light class="right" label="Measure">
+                <paper-input value="{{quantity}}" type="number" class="left" always-float-label label="Quantity"></paper-input>
+                <paper-dropdown-menu-light on-iron-select="_onMeasureSelected" class="right" label="Measure">
                     <!--
                       support hybrid mode:
                       paper-dropdown-menu-light 1.x distributes via <content select=".dropdown-content">
@@ -215,15 +215,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </paper-dropdown-menu-light>
             </div>
 
-            <paper-checkbox style="margin-top: 90px" checked>Has been purchased</paper-checkbox>
+            <paper-checkbox checked="{{hasPurchased}}" style="margin-top: 90px" checked>Has been purchased</paper-checkbox>
 
-            <paper-input always-float-label label="Comment"></paper-input>
+            <paper-input value="{{comment}}" always-float-label label="Comment"></paper-input>
 
-            <paper-dropdown-menu-light label="Category">
+            <paper-dropdown-menu-light on-iron-select="_onCategorySelected" label="Category">
                 <paper-listbox class="dropdown-content" slot="dropdown-content">
-                    <paper-item>Home</paper-item>
-                    <paper-item>Clothes</paper-item>
-                    <paper-item>Food</paper-item>
+                    <paper-item value="22">Home</paper-item>
+                    <paper-item value="444">Clothes</paper-item>
+                    <paper-item value="3">Food</paper-item>
                 </paper-listbox>
             </paper-dropdown-menu-light>
 
@@ -237,7 +237,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
 
     <script>
-        /* eslint-disable max-len,no-trailing-spaces */
+        /* eslint-disable max-len,no-trailing-spaces,linebreak-style,no-console */
         Polymer({
             is: 'my-app',
 
@@ -247,9 +247,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     reflectToAttribute: true,
                     observer: '_pageChanged',
                 },
-                purchases: {
+                purchasesCount: {
                     type: Number,
                     value: 0,
+                },
+                purchases: {
+                    type: Array,
+                    value: [],
+                },
+                globalId: {
+                    type: Number,
+                    value: 0,
+                },
+                selectedMeasure: {
+                    type: String,
+                    value: '',
+                },
+                selectedCategoryId: {
+                    type: Number,
+                    value: -1,
                 },
             },
 
@@ -281,7 +297,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             openNewPurchaseDialog: function() {
                 this.$.newPurchaseDialog.open();
-                this.purchases = this.purchases + 1;
+                /* this.purchases = this.purchases + 1; */
+            },
+
+            _onNewPurchaseDialogClosed: function(e) {
+                console.log(e.detail.confirmed);
+
+                if (e.detail.confirmed) {
+                    this.createNewPurchase();
+                }
+            },
+
+            createNewPurchase: function() {
+                var purchase = {
+                    id: this.globalId,
+                    name: this.purchaseName,
+                    quantity: this.quantity,
+                    measure: this.selectedMeasure,
+                    hasPurchased: this.hasPurchased,
+                    comment: this.comment,
+                    categoryId: this.selectedCategoryId,
+                };
+
+                this.push('purchases', purchase); // push purchase into purchases
+                this.globalId++;
+            },
+
+            _onMeasureSelected: function(e) {
+                var selectedItem = e.target.selectedItem;
+                if (selectedItem) {
+                    this.selectedMeasure = selectedItem.innerHTML;
+                    console.log('selected: ' + selectedItem.innerHTML);
+                }
+            },
+
+            _onCategorySelected: function(e) {
+                var selectedItem = e.target.selectedItem;
+                if (selectedItem) {
+                    this.selectedCategoryId = selectedItem.value;
+                    console.log('selected: ' + selectedItem.value);
+                }
             },
 
         });
