@@ -19,13 +19,122 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 padding: 10px;
             }
+
+            .dialog {
+                width: 500px;
+                margin-top: 50px;
+            }
+
+            paper-card {
+                --paper-card: {
+                    margin: 10px;
+                };
+            }
+
+            paper-fab {
+                position: fixed;
+                right: 24px;
+                bottom: 24px;
+                --paper-fab-background: #EF5458;
+                --paper-fab-keyboard-focus-background: #DF4448;
+            }
+
+            .cards-holder {
+                margin: 0 13px;
+            }
+
+
+            paper-dropdown-menu-light {
+                --paper-menu-button-content: {
+                    width: 200px;
+                };
+            }
+
+            .button {
+                margin: 0 10px;
+            }
+
+            .input-container {
+                position: relative;
+                margin: 30px 0;
+            }
+
+            .left {
+                position: absolute;
+                left: 0;
+                margin: 0 25px;
+                width: 40%;
+            }
+
+            .right {
+                position: absolute;
+                right: 0;
+                margin: 0 25px;
+            }
+
+
+
         </style>
 
         <div class="card">
             <div class="circle">1</div>
             <h1>Categories list</h1>
-            <p>...</p>
         </div>
+
+        <div class="cards-holder">
+            <template is="dom-repeat" items="{{purchases}}">
+                <paper-card image="images/purchase-small.png">
+                    <div class="card-content">
+                        <div class="purchase-header">{{item.name}}
+                        </div>
+                        <p>Price: {{item.price}}</p>
+                        <p class="cafe-light">Quantity: {{item.quantity}} {{item.measure}}</p>
+                        <p>Comment: {{item.comment}}</p>
+                        <p>Category: {{item.category}}</p>
+                    </div>
+                </paper-card>
+            </template>
+
+            <paper-fab on-tap="openNewPurchaseDialog" icon="create"></paper-fab>
+        </div>
+
+        <paper-dialog id="newPurchaseDialog" on-iron-overlay-closed="_onNewPurchaseDialogClosed" class="dialog">
+            <h2>Create new purchase note</h2>
+            <paper-input value="{{purchaseName}}" always-float-label label="Name"></paper-input>
+            <paper-input value="{{price}}" type="number" style="width: 40%" always-float-label label="Price"></paper-input>
+
+            <div class="input-container">
+                <paper-input value="{{quantity}}" type="number" class="left" always-float-label label="Quantity"></paper-input>
+                <paper-dropdown-menu-light on-iron-select="_onMeasureSelected" class="right" label="Measure">
+                    <paper-listbox class="dropdown-content" slot="dropdown-content">
+                        <paper-item>Quantity(Qty)</paper-item>
+                        <paper-item>Grams(g)</paper-item>
+                        <paper-item>Liters(l)</paper-item>
+                    </paper-listbox>
+                </paper-dropdown-menu-light>
+            </div>
+
+            <paper-checkbox checked="{{hasPurchased}}" style="margin-top: 90px" checked>Has been purchased</paper-checkbox>
+
+            <paper-input value="{{comment}}" always-float-label label="Comment"></paper-input>
+
+            <paper-dropdown-menu-light on-iron-select="_onCategorySelected" label="Category">
+                <paper-listbox class="dropdown-content" slot="dropdown-content">
+                    <paper-item categoryId="22">Home</paper-item>
+                    <paper-item categoryId="444">Clothes</paper-item>
+                    <paper-item categoryId="3">Food</paper-item>
+                </paper-listbox>
+            </paper-dropdown-menu-light>
+
+            <div class="buttons">
+                <paper-button dialog-dismiss class="button">Cancel</paper-button>
+                <paper-button dialog-confirm autofocus class="button">Create</paper-button>
+            </div>
+        </paper-dialog>
+
+
+
+
     </template>
 
     <script>
@@ -34,8 +143,99 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             listeners: {
                 'tap': 'onTap',
             },
-            onTap: function() {
-                /* this.pressed = !this.pressed; */
+            properties: {
+                page: {
+                    type: String,
+                    reflectToAttribute: true,
+                    observer: '_pageChanged',
+                },
+                purchasesCount: {
+                    type: Number,
+                    value: 0,
+                },
+                purchases: {
+                    type: Array,
+                    value: [],
+                },
+                globalId: {
+                    type: Number,
+                    value: 0,
+                },
+                selectedMeasure: {
+                    type: String,
+                    value: '',
+                },
+                selectedCategoryId: {
+                    type: Number,
+                    value: -1,
+                },
+            },
+
+            observers: [
+                '_routePageChanged(routeData.page)',
+            ],
+
+            /* listeners: {
+             'newFabTap': 'dropdownDialog.open()',
+             },*/
+
+            _routePageChanged: function(page) {
+                this.page = page || 'view1';
+            },
+
+            _pageChanged: function(page) {
+                // Load page import on demand. Show 404 page if fails
+                var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+                this.importHref(resolvedPageUrl, null, this._showPage404, true);
+            },
+
+            _showPage404: function() {
+                this.page = 'view404';
+            },
+
+            openNewPurchaseDialog: function() {
+                this.$.newPurchaseDialog.open();
+            },
+
+            _onNewPurchaseDialogClosed: function(e) {
+                console.log(e.detail.confirmed);
+
+                if (e.detail.confirmed) {
+                    this.createNewPurchase();
+                }
+            },
+
+            createNewPurchase: function() {
+                var purchase = {
+                    id: this.globalId,
+                    name: this.purchaseName,
+                    quantity: this.quantity,
+                    measure: this.selectedMeasure,
+                    hasPurchased: this.hasPurchased,
+                    comment: this.comment,
+                    categoryId: this.selectedCategoryId,
+                };
+
+                this.push('purchases', purchase); // push purchase into purchases
+                this.globalId++;
+
+                // TODO: update view
+            },
+
+            _onMeasureSelected: function(e) {
+                var selectedItem = e.target.selectedItem;
+                if (selectedItem) {
+                    this.selectedMeasure = selectedItem.innerHTML;
+                    console.log('selected: ' + selectedItem.innerHTML);
+                }
+            },
+
+            _onCategorySelected: function(e) {
+                var selectedItem = e.target.selectedItem;
+                if (selectedItem) {
+                    this.selectedCategoryId = selectedItem.attributes.categoryId.value;
+                    console.log('selected: ' + selectedItem.attributes.categoryId.value);
+                }
             },
         });
     </script>
