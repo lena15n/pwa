@@ -19,6 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="/bower_components/app-layout/app-layout.html">
 
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
@@ -40,6 +41,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
 
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
@@ -51,7 +54,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="my-app">
     <template>
         <style>
-            /*   :host {
+              :host {
                  --app-primary-color: #4285f4;
                  --app-secondary-color: black;
 
@@ -73,7 +76,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                .drawer-list a.iron-selected {
                  color: black;
                  font-weight: bold;
-               }*/
+               }
 
             body {
                 position: relative;
@@ -146,53 +149,70 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 data="{{routeData}}"
                 tail="{{subroute}}"></app-route>
 
-        <paper-header-panel class="blue">
-            <div class="paper-header">STANDARD TEST</div>
-            <paper-drawer-panel
-                    id="mainDrawerPanel"
-                    class="main-drawer-panel"
-                    responsive-width="600px"
-                    drawer-width="[[_computeListWidth(_isMobile)]]"
-                    drawer-toggle-attribute="list-toggle"
-                    narrow="{{_isMobile}}">
-                <paper-header-panel class="left-drawer-panel" drawer>
-                    <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                        <div class="left-link">
-                            <a style="text-decoration: none" name="categories" href="/categories">Categories</a>
-                        </div>
-                        <div class="left-link">
-                            <a style="text-decoration: none" name="view1" href="/view1">View One</a>
-                        </div>
-                    </iron-selector>
-                </paper-header-panel>
-
-                <paper-header-panel class="content-panel" main>
-                    <paper-toolbar responsive-width="600px">
-                        <paper-icon-button icon="menu" list-toggle></paper-icon-button>
-                        <span class="flex">My Purchases</span>
-                    </paper-toolbar>
-                    <div class="content">azaz: [[purchases]]
-                        <iron-pages
-                                selected="[[page]]"
-                                attr-for-selected="name"
-                                fallback-selection="view404"
-                                role="main">
-                            <my-view1 name="view1"></my-view1>
-                            <my-categories name="categories"></my-categories>
-                            <my-new-purchase name="new-purchase"></my-new-purchase>
-                            <my-view404 name="view404"></my-view404>
-                        </iron-pages>
 
 
-                        <paper-fab on-tap="openNewPurchaseDialog" icon="create" class="fab"></paper-fab><!-- or add -->
 
+        <app-drawer-layout>
 
+            <app-drawer slot="drawer">
+                <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+                    <div class="left-link">
+                        <a style="text-decoration: none" name="categories" href="/categories">Categories</a>
                     </div>
-                </paper-header-panel>
-            </paper-drawer-panel>
-        </paper-header-panel>
+                    <div class="left-link">
+                        <a style="text-decoration: none" name="view1" href="/view1">View One</a>
+                    </div>
+                </iron-selector>
+            </app-drawer>
 
-       <!-- USE IT FOR ITEMS OF LIST <paper-card image="demo/donuts.png">-->
+            <app-header-layout>
+
+                <app-header slot="header" reveals effects="waterfall">
+                    <app-toolbar>
+                        <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+                        <div main-title>Title</div>
+                    </app-toolbar>
+                </app-header>
+
+                <div>azaz: [[purchases]]
+
+                    <template is="dom-repeat" items="{{purchases}}">
+                        <paper-card image="images/purchase-small.png">
+                            <div class="card-content">
+                                <div class="purchase-header">{{item.name}}
+                                </div>
+                                <p>Price: {{item.price}}</p>
+                                <p class="cafe-light">Quantity: {{item.quantity}} {{item.measure}}</p>
+                                <p>Comment: {{item.comment}}</p>
+                                <p>Category: {{item.category}}</p>
+                            </div>
+                        </paper-card>
+                    </template>
+
+
+
+
+
+                    <paper-fab on-tap="openNewPurchaseDialog" icon="create" class="fab"></paper-fab>&lt;!&ndash; or add &ndash;&gt;
+                    <iron-pages
+                            selected="[[page]]"
+                            attr-for-selected="name"
+                            fallback-selection="view404"
+                            role="main">
+                        <my-view1 name="view1"></my-view1>
+                        <my-categories name="categories"></my-categories>
+                        <my-new-purchase name="new-purchase"></my-new-purchase>
+                        <my-view404 name="view404"></my-view404>
+                    </iron-pages>
+
+
+
+                </div>
+
+            </app-header-layout>
+        </app-drawer-layout>
+
+
 
         <paper-dialog id="newPurchaseDialog" on-iron-overlay-closed="_onNewPurchaseDialogClosed" class="dialog">
             <h2>Create new purchase note</h2>
@@ -202,13 +222,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div class="input-container">
                 <paper-input value="{{quantity}}" type="number" class="left" always-float-label label="Quantity"></paper-input>
                 <paper-dropdown-menu-light on-iron-select="_onMeasureSelected" class="right" label="Measure">
-                    <!--
-                      support hybrid mode:
-                      paper-dropdown-menu-light 1.x distributes via <content select=".dropdown-content">
-                      paper-dropdown-menu-light 2.x distributes via <slot name="dropdown-content">
-                    -->
                     <paper-listbox class="dropdown-content" slot="dropdown-content">
-                        <paper-item>Quantity(Qty)</paper-item><!-- штук -->
+                        <paper-item>Quantity(Qty)</paper-item>
                         <paper-item>Grams(g)</paper-item>
                         <paper-item>Liters(l)</paper-item>
                     </paper-listbox>
@@ -316,6 +331,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 this.push('purchases', purchase); // push purchase into purchases
                 this.globalId++;
+
+                // TODO: update view
             },
 
             _onMeasureSelected: function(e) {
