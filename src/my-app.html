@@ -143,26 +143,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     reflectToAttribute: true,
                     observer: '_pageChanged',
                 },
-                purchasesCount: {
-                    type: Number,
-                    value: 0,
-                },
-                purchases: {
-                    type: Array,
-                    value: [],
-                },
-                globalId: {
-                    type: Number,
-                    value: 0,
-                },
-                selectedMeasure: {
-                    type: String,
-                    value: '',
-                },
-                selectedCategoryId: {
-                    type: Number,
-                    value: -1,
-                },
             },
 
             observers: [
@@ -185,49 +165,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             _showPage404: function() {
                 this.page = 'view404';
-            },
-
-            openNewPurchaseDialog: function() {
-                this.$.newPurchaseDialog.open();
-            },
-
-            _onNewPurchaseDialogClosed: function(e) {
-                console.log(e.detail.confirmed);
-
-                if (e.detail.confirmed) {
-                    this.createNewPurchase();
-                }
-            },
-
-            createNewPurchase: function() {
-                var purchase = {
-                    id: this.globalId,
-                    name: this.purchaseName,
-                    quantity: this.quantity,
-                    measure: this.selectedMeasure,
-                    hasPurchased: this.hasPurchased,
-                    comment: this.comment,
-                    categoryId: this.selectedCategoryId,
-                };
-
-                this.push('purchases', purchase); // push purchase into purchases
-                this.globalId++;
-            },
-
-            _onMeasureSelected: function(e) {
-                var selectedItem = e.target.selectedItem;
-                if (selectedItem) {
-                    this.selectedMeasure = selectedItem.innerHTML;
-                    console.log('selected: ' + selectedItem.innerHTML);
-                }
-            },
-
-            _onCategorySelected: function(e) {
-                var selectedItem = e.target.selectedItem;
-                if (selectedItem) {
-                    this.selectedCategoryId = selectedItem.attributes.categoryId.value;
-                    console.log('selected: ' + selectedItem.attributes.categoryId.value);
-                }
             },
 
         });
