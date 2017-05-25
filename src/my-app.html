@@ -140,6 +140,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 width: 100%;
             }
 
+            paper-card {
+                --paper-card: {
+                    margin: 10px;
+                };
+            }
+
+            paper-fab {
+              position: fixed;
+              right: 24px;
+              bottom: 24px;
+              --paper-fab-background: #EF5458;
+              --paper-fab-keyboard-focus-background: #DF4448;
+            }
+
+            .cards-holder {
+                margin: 0 40px;
+            }
+
         </style>
 
         <app-location route="{{route}}"></app-location>
@@ -147,13 +165,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 route="{{route}}"
                 pattern="/:page"
                 data="{{routeData}}"
-                tail="{{subroute}}"></app-route>
+                tail="{{subroute}}">
+        </app-route>
 
 
 
 
         <app-drawer-layout>
-
             <app-drawer slot="drawer">
                 <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                     <div class="left-link">
@@ -170,12 +188,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <app-header slot="header" reveals effects="waterfall">
                     <app-toolbar>
                         <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-                        <div main-title>Title</div>
+                        <div main-title>My purchases</div>
                     </app-toolbar>
                 </app-header>
 
-                <div>azaz: [[purchases]]
-
+                <div class="cards-holder">
                     <template is="dom-repeat" items="{{purchases}}">
                         <paper-card image="images/purchase-small.png">
                             <div class="card-content">
@@ -188,12 +205,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </div>
                         </paper-card>
                     </template>
+                </div>
 
 
 
 
-
-                    <paper-fab on-tap="openNewPurchaseDialog" icon="create" class="fab"></paper-fab>&lt;!&ndash; or add &ndash;&gt;
+                    <paper-fab on-tap="openNewPurchaseDialog" icon="create"></paper-fab>
                     <iron-pages
                             selected="[[page]]"
                             attr-for-selected="name"
@@ -207,7 +224,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
-                </div>
+
 
             </app-header-layout>
         </app-drawer-layout>
