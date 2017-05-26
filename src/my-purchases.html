@@ -14,6 +14,7 @@
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 
 <dom-module id="my-purchases">
@@ -77,13 +78,16 @@
                 margin: 0 25px;
             }
 
-
+            .header {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 5%;
+            }
 
         </style>
 
-        <div class="card">
-            <div class="circle">1</div>
-            <h1>My purchases list</h1>
+        <div class="header">
+            <h1>PURCHASES LIST</h1>
         </div>
 
         <div class="cards-holder">
@@ -96,6 +100,10 @@
                         <p class="cafe-light">Quantity: {{item.quantity}} {{item.measure}}</p>
                         <p>Comment: {{item.comment}}</p>
                         <p>Category: {{item.category}}</p>
+                    </div>
+                    <div class="card-actions">
+                        <paper-button on-tap="_editPurchase" class="button">Edit</paper-button>
+                        <paper-button on-tap="_deletePurchase" class="button">Delete</paper-button>
                     </div>
                 </paper-card>
             </template>
@@ -138,7 +146,9 @@
         </paper-dialog>
 
 
-
+        <!-- use db -->
+        <app-localstorage-document key="purchases" data="{{purchases}}">
+        </app-localstorage-document>
 
     </template>
 
@@ -227,6 +237,21 @@
                     this.selectedCategoryId = selectedItem.attributes.categoryId.value;
                     console.log('selected: ' + selectedItem.attributes.categoryId.value);
                 }
+            },
+
+            _editPurchase: function(e) {
+                //var purchase = e.model.item;
+            },
+
+
+            _deletePurchase: function(e) {
+                var purchaseId = e.model.item.id;
+                var newPurchases = this.purchases.filter(function(purchase) {
+                    return purchase.id !== purchaseId;
+                });
+                //force update property
+                this.purchases = [];
+                this.purchases = newPurchases;
             },
         });
     </script>
