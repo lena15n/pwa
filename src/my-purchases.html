@@ -141,7 +141,7 @@
 
             <paper-dropdown-menu-light selected-item="{{selectedCategoryElem}}" label="Category">
                 <paper-listbox attr-for-selected="value" id="categoryList" class="dropdown-content" slot="dropdown-content">
-                    <template id="categoriesCards" is="dom-repeat" items="{{categories}}">
+                    <template id="categoriesCards" is="dom-repeat" items="[[categories]]">
                         <paper-item value="{{item.id}}">{{item.name}}</paper-item>
                     </template>
                 </paper-listbox>
@@ -156,6 +156,8 @@
 
         <!-- use db -->
         <app-localstorage-document key="purchases" data="{{purchases}}">
+        </app-localstorage-document>
+        <app-localstorage-document key="purchasesId" data="{{purchasesId}}">
         </app-localstorage-document>
 
         <app-localstorage-document key="categories" data="{{categories}}">
@@ -183,10 +185,6 @@
                     type: Array,
                     value: [],
                 },
-                globalId: {
-                    type: Number,
-                    value: 0,
-                },
                 selectedMeasureElem: {
                     type: Object,
                     value: null,
@@ -202,6 +200,10 @@
                 isEditDialog: {
                     type: Boolean,
                     value: false,
+                },
+                purchasesId: {
+                    type: Number,
+                    value: 0,
                 },
             },
 
@@ -238,7 +240,7 @@
 
             createNewPurchase: function() {
                 var purchase = {
-                    id: this.globalId,
+                    id: this.purchasesId,
                     name: this.purchaseName,
                     price: this.price,
                     quantity: this.quantity,
@@ -249,7 +251,7 @@
                 };
 
                 this.push('purchases', purchase); // push purchase into purchases
-                this.globalId++;
+                this.purchasesId++;
             },
 
             clearForm: function() {

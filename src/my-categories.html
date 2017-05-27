@@ -123,8 +123,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <app-localstorage-document key="categories" data="{{categories}}">
         </app-localstorage-document>
+        <app-localstorage-document key="categoriesId" data="{{categoriesId}}">
+        </app-localstorage-document>
 
-        <app-localstorage-document key="purchases" data="{{purchases}}">
+        <app-localstorage-document id="purchasesStorage" key="purchases" data="{{purchases}}">
         </app-localstorage-document>
     </template>
 
@@ -148,10 +150,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: Array,
                     value: [],
                 },
-                globalId: {
-                    type: Number,
-                    value: 0,
-                },
                 isEditDialog: {
                     type: Boolean,
                     value: false,
@@ -159,6 +157,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 editedCategory: {
                     type: Object,
                     value: null,
+                },
+                categoriesId: {
+                    type: Number,
+                    value: 0,
                 },
             },
 
@@ -200,7 +202,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             _deleteCategory: function(e) {
                 var categoryId = e.model.item.id;
-
                 var newPurchases = this.purchases.filter(function(purchase) {
                     return purchase.categoryId !== categoryId;
                 });
@@ -235,12 +236,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             createNewCategory: function() {
                 var category = {
-                    id: this.globalId,
+                    id: this.categoriesId,
                     name: this.categoryName,
                 };
 
                 this.push('categories', category);
-                this.globalId++;
+                this.categoriesId++;
             },
             clearForm: function() {
                 this.categoryName = '';
