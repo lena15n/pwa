@@ -106,7 +106,7 @@
                         <p>Price: {{item.price}}</p>
                         <p class="cafe-light">Quantity: {{item.quantity}} {{item.measure}}</p>
                         <p>Comment: {{item.comment}}</p>
-                        <p>Category: {{item.category}}</p>
+                        <p>Category: {{_getCategoryNameById(item.categoryId)}}</p>
                         <paper-checkbox checked="{{item.hasPurchased}}" disabled>Has been purchased</paper-checkbox>
                     </div>
                     <div class="card-actions">
@@ -139,11 +139,11 @@
 
             <paper-input value="{{comment}}" always-float-label label="Comment"></paper-input>
 
-            <paper-dropdown-menu-light on-iron-select="_onCategorySelected" label="Category">
-                <paper-listbox id="categoryList" class="dropdown-content" slot="dropdown-content">
-                    <paper-item categoryId="22">Home</paper-item>
-                    <paper-item categoryId="444">Clothes</paper-item>
-                    <paper-item categoryId="3">Food</paper-item>
+            <paper-dropdown-menu-light selected-item="{{selectedCategoryElem}}" label="Category">
+                <paper-listbox attr-for-selected="value" id="categoryList" class="dropdown-content" slot="dropdown-content">
+                    <template id="categoriesCards" is="dom-repeat" items="{{categories}}">
+                        <paper-item value="{{item.id}}">{{item.name}}</paper-item>
+                    </template>
                 </paper-listbox>
             </paper-dropdown-menu-light>
 
@@ -158,8 +158,8 @@
         <app-localstorage-document key="purchases" data="{{purchases}}">
         </app-localstorage-document>
 
-        <!--<app-localstorage-document key="categories" data="{{categories}}">
-        </app-localstorage-document>-->
+        <app-localstorage-document key="categories" data="{{categories}}">
+        </app-localstorage-document>
 
     </template>
 
@@ -188,12 +188,12 @@
                     value: 0,
                 },
                 selectedMeasureElem: {
-                    type: Number,
-                    value: 0,
+                    type: Object,
+                    value: null,
                 },
-                selectedCategoryId: {
-                    type: Number,
-                    value: -1,
+                selectedCategoryElem: {
+                    type: Object,
+                    value: null,
                 },
                 editedPurchase: {
                     type: Object,
@@ -245,7 +245,7 @@
                     measure: this.selectedMeasureElem.textContent,
                     hasPurchased: this.hasPurchased,
                     comment: this.comment,
-                    categoryId: this.selectedCategoryId,
+                    categoryId: this.selectedCategoryElem.value,
                 };
 
                 this.push('purchases', purchase); // push purchase into purchases
@@ -258,14 +258,6 @@
                 this.quantity = '';
                 this.hasPurchased = false;
                 this.comment = '';
-            },
-
-            _onCategorySelected: function(e) {
-                var selectedItem = e.target.selectedItem;
-                if (selectedItem) {
-                    this.selectedCategoryId = selectedItem.attributes.categoryId.value;
-                    console.log('selected: ' + selectedItem.attributes.categoryId.value);
-                }
             },
 
             _openEditDialog: function(e) {
@@ -290,10 +282,10 @@
                 purchase.name = this.purchaseName;
                 purchase.price = this.price;
                 purchase.quantity = this.quantity;
-                purchase.measure = this.selectedMeasureElem.textContent;
+                purchase.measure = this.selectedMeasureElem === null ? '' : this.selectedMeasureElem.textContent;
                 purchase.hasPurchased = this.hasPurchased;
                 purchase.comment = this.comment;
-                purchase.categoryId = this.selectedCategoryId;
+                purchase.categoryId = this.selectedCategoryElem.value;// this.selectedCategoryElem === null ? ''
 
                 // copy array by value to refresh dom-repeat
                 var temp = this.purchases.slice();
@@ -316,6 +308,15 @@
                 // force update property
                 this.purchases = [];
                 this.purchases = newPurchases;
+            },
+            _getCategoryNameById: function(categoryId) {
+                if (categoryId === null || categoryId === -1) {
+                    return '';
+                }
+                var thecategory = this.categories.filter(function(category) {
+                    return category.id === categoryId;
+                });
+                return thecategory[0].name;
             },
         });
     </script>
