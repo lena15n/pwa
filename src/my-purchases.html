@@ -91,9 +91,6 @@
             paper-dialog {
                 top: 3%;
             }
-
-
-
         </style>
 
         <div class="header">
@@ -101,7 +98,7 @@
         </div>
 
         <div class="cards-holder">
-            <template is="dom-repeat" items="{{purchases}}">
+            <template id="purchasesCards" is="dom-repeat" items="{{purchases}}">
                 <paper-card image="images/purchase-small.png">
                     <div class="card-content">
                         <div class="card-header">{{item.name}}
@@ -113,7 +110,7 @@
                         <paper-checkbox checked="{{item.hasPurchased}}" disabled>Has been purchased</paper-checkbox>
                     </div>
                     <div class="card-actions">
-                        <paper-button on-tap="_editPurchase" class="button">Edit</paper-button>
+                        <paper-button on-tap="_openEditDialog" class="button">Edit</paper-button>
                         <paper-button on-tap="_deletePurchase" class="button">Delete</paper-button>
                     </div>
                 </paper-card>
@@ -161,6 +158,9 @@
         <app-localstorage-document key="purchases" data="{{purchases}}">
         </app-localstorage-document>
 
+        <!--<app-localstorage-document key="categories" data="{{categories}}">
+        </app-localstorage-document>-->
+
     </template>
 
     <script>
@@ -195,6 +195,14 @@
                     type: Number,
                     value: -1,
                 },
+                editedPurchase: {
+                    type: Object,
+                    value: null,
+                },
+                isEditDialog: {
+                    type: Boolean,
+                    value: false,
+                },
             },
 
             observers: [
@@ -206,6 +214,7 @@
              },*/
 
             openNewPurchaseDialog: function() {
+                this.isEditDialog = false;
                 this.$.newPurchaseDialog.open();
             },
 
@@ -215,7 +224,11 @@
                 // as drop down also send that event
                 if (e.target === this.$.newPurchaseDialog) {
                     if (e.detail.confirmed) {
-                        this.createNewPurchase();
+                        if (this.isEditDialog) {
+                            this.editPurchase();
+                        } else {
+                            this.createNewPurchase();
+                        }
                     }
 
                     this.clearForm();
@@ -254,8 +267,41 @@
                 }
             },
 
-            _editPurchase: function(e) {
-                //var purchase = e.model.item;
+            _openEditDialog: function(e) {
+                this.isEditDialog = true;
+                this.editedPurchase = e.model.item;
+                this.$.newPurchaseDialog.open();
+                this.fillForm(this.editedPurchase);
+            },
+
+            fillForm: function(purchase) {
+                this.purchaseName = purchase.name;
+                this.price = purchase.price;
+                this.quantity = purchase.quantity;
+                this.hasPurchased = purchase.hasPurchased;
+                this.comment = purchase.comment;
+            },
+
+            editPurchase: function(e) {
+                var purchase = {};
+                purchase.id = this.editedPurchase.id;
+                purchase.name = this.purchaseName;
+                purchase.price = this.price;
+                purchase.quantity = this.quantity;
+                purchase.hasPurchased = this.hasPurchased;
+                purchase.comment = this.comment;
+                purchase.categoryId = this.selectedCategoryId;
+
+                // copy array by value to refresh dom-repeat
+                var temp = this.purchases.slice();
+                this.purchases.forEach(function(item, i) {
+                    if (item.id === purchase.id) {
+                        temp[i] = purchase;
+                    }
+                });
+
+                this.purchases = temp;
+                this.editedPurchase = null;
             },
 
 
