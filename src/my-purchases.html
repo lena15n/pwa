@@ -120,7 +120,7 @@
         </div>
 
         <paper-dialog id="newPurchaseDialog" on-iron-overlay-closed="_onNewPurchaseDialogClosed" class="dialog">
-            <h2>Create new purchase note</h2>
+            <h2 id="dialogHeader"></h2>
             <paper-input value="{{purchaseName}}" always-float-label label="Name"></paper-input>
             <paper-input value="{{price}}" type="number" style="width: 40%" always-float-label label="Price"></paper-input>
 
@@ -149,7 +149,7 @@
 
             <div class="buttons">
                 <paper-button dialog-dismiss class="button">Cancel</paper-button>
-                <paper-button dialog-confirm autofocus class="button">Create</paper-button>
+                <paper-button dialog-confirm autofocus class="button">OK</paper-button>
             </div>
         </paper-dialog>
 
@@ -215,6 +215,7 @@
 
             openNewPurchaseDialog: function() {
                 this.isEditDialog = false;
+                this.$.dialogHeader.textContent = 'Create new purchase note';
                 this.$.newPurchaseDialog.open();
             },
 
@@ -269,6 +270,7 @@
 
             _openEditDialog: function(e) {
                 this.isEditDialog = true;
+                this.$.dialogHeader.textContent = 'Edit the purchase note';
                 this.editedPurchase = e.model.item;
                 this.$.newPurchaseDialog.open();
                 this.fillForm(this.editedPurchase);

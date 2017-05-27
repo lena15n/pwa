@@ -55,6 +55,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 };
             }
 
+            .card-header {
+                @apply --paper-font-headline;
+            }
+
             paper-fab {
                 position: fixed;
                 right: 24px;
@@ -109,8 +113,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <template is="dom-repeat" items="{{categories}}">
                 <paper-card image="images/category1.png">
                     <div class="card-content">
-                        <div class="purchase-header">{{item.name}}
+                        <div class="card-header">{{item.name}}
                         </div>
+                    </div>
+                    <div class="card-actions">
+                    <paper-button on-tap="_openEditCategoryDialog" class="button">Edit</paper-button>
+                    <paper-button on-tap="_deleteCategory" class="button">Delete</paper-button>
                     </div>
                 </paper-card>
             </template>
@@ -119,13 +127,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
 
         <paper-dialog id="newCategoryDialog" on-iron-overlay-closed="_onNewCategoryDialogClosed" class="dialog">
-            <h2>Create new purchase note</h2>
+            <h2 id="dialogHeader"></h2>
             <paper-input value="{{categoryName}}" always-float-label label="Name"></paper-input>
             <div class="buttons">
                 <paper-button dialog-dismiss class="button">Cancel</paper-button>
-                <paper-button dialog-confirm autofocus class="button">Create</paper-button>
+                <paper-button dialog-confirm autofocus class="button">OK</paper-button>
             </div>
         </paper-dialog>
+
+
+        <app-localstorage-document key="categories" data="{{categories}}">
+        </app-localstorage-document>
     </template>
 
     <script>
@@ -152,17 +164,75 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: Number,
                     value: 0,
                 },
+                isEditDialog: {
+                    type: Boolean,
+                    value: false,
+                },
+                editedCategory: {
+                    type: Object,
+                    value: null,
+                },
             },
 
             _openNewCategoryDialog: function() {
+                this.isEditDialog = false;
+                this.$.dialogHeader.textContent = 'Create new category';
                 this.$.newCategoryDialog.open();
+            },
+
+            _openEditCategoryDialog: function(e) {
+                this.isEditDialog = true;
+                this.editedCategory = e.model.item;
+                this.$.dialogHeader.textContent = 'Edit the category';
+                this.$.newCategoryDialog.open();
+                this.fillForm(this.editedCategory);
+            },
+
+            fillForm: function(category) {
+                this.categoryName = category.name;
+            },
+
+            editCategory: function(e) {
+                var category = {};
+                category.id = this.editedCategory.id;
+                category.name = this.categoryName;
+
+                // copy array by value to refresh dom-repeat
+                var temp = this.categories.slice();
+                this.categories.forEach(function(item, i) {
+                    if (item.id === category.id) {
+                        temp[i] = category;
+                    }
+                });
+
+                this.categories = temp;
+                this.editedCategory = null;
+            },
+
+
+            _deleteCategory: function(e) {
+                var categoryId = e.model.item.id;
+                var newCategories = this.categories.filter(function(category) {
+                    return category.id !== categoryId;
+                });
+                // force update property
+                this.categories = [];
+                this.categories = newCategories;
             },
 
             _onNewCategoryDialogClosed: function(e) {
                 console.log(e.detail.confirmed);
 
-                if (e.detail.confirmed) {
-                    this.createNewCategory();
+                if (e.target === this.$.newCategoryDialog) {
+                    if (e.detail.confirmed) {
+                        if (this.isEditDialog) {
+                            this.editCategory();
+                        } else {
+                            this.createNewCategory();
+                        }
+                    }
+
+                    this.clearForm();
                 }
             },
 
@@ -174,6 +244,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 this.push('categories', category);
                 this.globalId++;
+            },
+            clearForm: function() {
+                this.categoryName = '';
             },
         });
     </script>
