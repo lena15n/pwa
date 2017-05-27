@@ -126,7 +126,7 @@
 
             <div class="input-container">
                 <paper-input value="{{quantity}}" type="number" class="left" always-float-label label="Quantity"></paper-input>
-                <paper-dropdown-menu-light id="measureList" selected-item="{{selectedMeasure}}" class="right" label="Measure">
+                <paper-dropdown-menu-light id="measureList" selected-item="{{selectedMeasureElem}}" class="right" label="Measure">
                     <paper-listbox class="dropdown-content" slot="dropdown-content">
                         <paper-item>Quantity(Qty)</paper-item>
                         <paper-item>Grams(g)</paper-item>
@@ -187,7 +187,7 @@
                     type: Number,
                     value: 0,
                 },
-                selectedMeasure: {
+                selectedMeasureElem: {
                     type: Number,
                     value: 0,
                 },
@@ -241,7 +241,7 @@
                     name: this.purchaseName,
                     price: this.price,
                     quantity: this.quantity,
-                    measure: this.selectedMeasure.textContent,
+                    measure: this.selectedMeasureElem.textContent,
                     hasPurchased: this.hasPurchased,
                     comment: this.comment,
                     categoryId: this.selectedCategoryId,
@@ -288,6 +288,7 @@
                 purchase.name = this.purchaseName;
                 purchase.price = this.price;
                 purchase.quantity = this.quantity;
+                purchase.measure = this.selectedMeasureElem.textContent;
                 purchase.hasPurchased = this.hasPurchased;
                 purchase.comment = this.comment;
                 purchase.categoryId = this.selectedCategoryId;
@@ -310,7 +311,7 @@
                 var newPurchases = this.purchases.filter(function(purchase) {
                     return purchase.id !== purchaseId;
                 });
-                //force update property
+                // force update property
                 this.purchases = [];
                 this.purchases = newPurchases;
             },
