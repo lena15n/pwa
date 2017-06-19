@@ -1,6 +1,4 @@
-
-
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
@@ -17,7 +15,7 @@
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 
-<dom-module id="my-purchases">
+</head><body><dom-module id="my-purchases">
     <template>
         <style include="shared-styles">
             :host {
@@ -107,7 +105,7 @@
                         <p class="cafe-light">Quantity: {{item.quantity}} {{item.measure}}</p>
                         <p>Comment: {{item.comment}}</p>
                         <p>Category: {{_getCategoryNameById(item.categoryId)}}</p>
-                        <paper-checkbox checked="{{item.hasPurchased}}" disabled>Has been purchased</paper-checkbox>
+                        <paper-checkbox checked="{{item.hasPurchased}}" disabled="">Has been purchased</paper-checkbox>
                     </div>
                     <div class="card-actions">
                         <paper-button on-tap="_openEditDialog" class="button">Edit</paper-button>
@@ -121,11 +119,11 @@
 
         <paper-dialog id="newPurchaseDialog" on-iron-overlay-closed="_onNewPurchaseDialogClosed" class="dialog">
             <h2 id="dialogHeader"></h2>
-            <paper-input value="{{purchaseName}}" always-float-label label="Name"></paper-input>
-            <paper-input value="{{price}}" type="number" style="width: 40%" always-float-label label="Price"></paper-input>
+            <paper-input value="{{purchaseName}}" always-float-label="" label="Name"></paper-input>
+            <paper-input value="{{price}}" type="number" style="width: 40%" always-float-label="" label="Price"></paper-input>
 
             <div class="input-container">
-                <paper-input value="{{quantity}}" type="number" class="left" always-float-label label="Quantity"></paper-input>
+                <paper-input value="{{quantity}}" type="number" class="left" always-float-label="" label="Quantity"></paper-input>
                 <paper-dropdown-menu-light id="measureList" selected-item="{{selectedMeasureElem}}" class="right" label="Measure">
                     <paper-listbox class="dropdown-content" slot="dropdown-content">
                         <paper-item>Quantity(Qty)</paper-item>
@@ -135,9 +133,9 @@
                 </paper-dropdown-menu-light>
             </div>
 
-            <paper-checkbox checked="{{hasPurchased}}" style="margin-top: 90px" checked>Has been purchased</paper-checkbox>
+            <paper-checkbox checked="{{hasPurchased}}" style="margin-top: 90px">Has been purchased</paper-checkbox>
 
-            <paper-input value="{{comment}}" always-float-label label="Comment"></paper-input>
+            <paper-input value="{{comment}}" always-float-label="" label="Comment"></paper-input>
 
             <paper-dropdown-menu-light selected-item="{{selectedCategoryElem}}" label="Category">
                 <paper-listbox attr-for-selected="value" id="categoryList" class="dropdown-content" slot="dropdown-content">
@@ -148,8 +146,8 @@
             </paper-dropdown-menu-light>
 
             <div class="buttons">
-                <paper-button dialog-dismiss class="button">Cancel</paper-button>
-                <paper-button dialog-confirm autofocus class="button">OK</paper-button>
+                <paper-button dialog-dismiss="" class="button">Cancel</paper-button>
+                <paper-button dialog-confirm="" autofocus="" class="button">OK</paper-button>
             </div>
         </paper-dialog>
 
@@ -322,4 +320,4 @@
             },
         });
     </script>
-</dom-module>
+</dom-module></body></html>

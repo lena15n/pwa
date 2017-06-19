@@ -6,9 +6,7 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<!--
+--><!--
 @license
 Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
@@ -16,9 +14,7 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<link rel="import" href="../bower_components/polymer/polymer.html">
+--><html><head><link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
 
@@ -35,7 +31,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 
 
-<dom-module id="my-categories">
+</head><body><dom-module id="my-categories">
     <template>
         <style include="shared-styles">
             :host {
@@ -113,10 +109,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <paper-dialog id="newCategoryDialog" on-iron-overlay-closed="_onNewCategoryDialogClosed" class="dialog">
             <h2 id="dialogHeader"></h2>
-            <paper-input value="{{categoryName}}" always-float-label label="Name"></paper-input>
+            <paper-input value="{{categoryName}}" always-float-label="" label="Name"></paper-input>
             <div class="buttons">
-                <paper-button dialog-dismiss class="button">Cancel</paper-button>
-                <paper-button dialog-confirm autofocus class="button">OK</paper-button>
+                <paper-button dialog-dismiss="" class="button">Cancel</paper-button>
+                <paper-button dialog-confirm="" autofocus="" class="button">OK</paper-button>
             </div>
         </paper-dialog>
 
@@ -249,3 +245,4 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
     </script>
 </dom-module>
+</body></html>
