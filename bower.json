@@ -30,7 +30,7 @@
     "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.0",
     "paper-card": "PolymerElements/paper-card#^2.0.0",
     "paper-scroll-header-panel": "PolymerElements/paper-scroll-header-panel#^2.0.0",
-    "app-storage": "PolymerElements/app-storage#^2.0.0",
+    "app-storage": "^2.0.2",
     "web-animations-js": "^2.2.5"
   },
   "devDependencies": {
