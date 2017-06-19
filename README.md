@@ -1,5 +1,9 @@
 **There is the clear source code and example with production files in "gh-pages" branch**
+
+
 ***Don't trust that smiling guy at down of the page: POLYMER IS A PAIN***
+
+
 
 # Polymer App Toolbox - Starter Kit
 
