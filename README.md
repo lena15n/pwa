@@ -1,4 +1,7 @@
-**There is the clear source code and example with production files in "gh-pages" branch**
+**There is the clear source code, example with production files in "gh-pages" branch**
+
+
+**Demo: https://lena15n.github.io/pwa**
 
 
 ***Don't trust that smiling guy at down of the page: POLYMER IS A PAIN***
