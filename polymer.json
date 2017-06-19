@@ -8,6 +8,7 @@
     "src/my-view404.html"
   ],
   "source": [
+	"bower_components/*",
     "src/**/*",
     "images/**/*",
     "bower.json"
