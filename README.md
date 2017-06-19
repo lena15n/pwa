@@ -1,3 +1,6 @@
+**This is demo for my polymer project: there are resources and other production files, which not exist in "master" branch**
+
+
 # Polymer App Toolbox - Starter Kit
 
 [![Build Status](https://travis-ci.org/PolymerElements/polymer-starter-kit.svg?branch=master)](https://travis-ci.org/PolymerElements/polymer-starter-kit)
