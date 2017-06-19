@@ -64,7 +64,7 @@
           && 'content' in document.createElement('template')
         );
 
-        if (!webComponentsSupported) {
+        /*if (!webComponentsSupported) {
           var script = document.createElement('script');
           script.async = true;
           script.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
@@ -72,13 +72,13 @@
           document.head.appendChild(script);
         } else {
           onload();
-        }
+        }*/
       })();
 
       // Load pre-caching Service Worker
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/service-worker.js');
+          navigator.serviceWorker.register('./service-worker.js');
         });
       }
     </script>
