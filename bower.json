@@ -36,5 +36,11 @@
   "devDependencies": {
     "web-component-tester": "^4.0.0"
   },
-  "private": true
+  "private": true,
+  "resolutions": {
+    "polymer": "^1.2.1",
+    "paper-input": "1 - 2",
+    "iron-location": "1 - 2",
+    "webcomponentsjs": "^v1.0.0"
+  }
 }

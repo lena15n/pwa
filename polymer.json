@@ -10,10 +10,11 @@
   "source": [
 	"bower_components/*",
     "src/**/*",
-    "images/**/*",
     "bower.json"
   ],
   "extraDependencies": [
-    "manifest.json"
+    "manifest.json",
+	"bower_components/app-storage/**/*",
+	"images/**/*"
   ]
 }
