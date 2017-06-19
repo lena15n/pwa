@@ -92,6 +92,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <div class="cards-holder">
             <template is="dom-repeat" items="{{categories}}">
+			<!-- images exist, but paper-card can't show it, don't know why -->
+			<!-- can be replaced with internet links -->
                 <paper-card image="../images/category1.png">
                     <div class="card-content">
                         <div class="card-header">{{item.name}}
